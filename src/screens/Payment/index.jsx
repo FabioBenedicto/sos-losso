@@ -6,28 +6,35 @@ import gStyles from '../../components/gStyles';
 import styles from './styles';
 import Locker from '../../assets/Locker.png';
 import Btn from '../../components/Button';
+import useUser from '../../hooks/useUser';
 
 export default function Payment({ route }) {
     const navigation = useNavigation();
-    const [email, setEmail] = useState(route.params.passEmail);
-    const [locker, setLocker] = useState(route.params.locker);
+    // const [email, setEmail] = useState(route.params.passEmail);
+    // const [locker, setLocker] = useState(route.params.locker);
     const [color, setColor] = useState('#D1D1D1');
     const [alertV, setAlertV] = useState(false);
+
+    const { user } = useUser();
 
     useEffect(() => {
         setColor('#FF7B7B');
     }, []);
 
-    const func = () => {
-        navigation.navigate('Home', {
-            passEmail: email,
-        });
-    };
+    // const func = () => {
+    //     navigation.navigate('Home', {
+    //         passEmail: email,
+    //     });
+    // };
 
     const backAction = () => {
         setAlertV(true);
         return true;
     };
+
+    function teste() {
+        console.log(user);
+    }
 
     useEffect(() => {
         BackHandler.addEventListener('hardwareBackPress', backAction);
@@ -57,7 +64,7 @@ export default function Payment({ route }) {
                         </View>
                         <View style={[gStyles.line, { marginTop: 30 }]} />
                         <View style={[gStyles.lineInfo, { padding: 10, paddingRight: 45 }]}>
-                            <TouchableOpacity style={[gStyles.linkContainer, { alignSelf: 'flex-start' }]} onPress={() => setAlertV(false)}>
+                            <TouchableOpacity style={[gStyles.linkContainer, { alignSelf: 'flex-start' }]} onPress={() => teste()}>
                                 <Text style={gStyles.linkText}>Cancelar</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={[gStyles.linkContainer, { alignSelf: 'flex-end' }]} onPress={() => navigation.navigate('Home', { passEmail: email })}>
@@ -93,7 +100,7 @@ export default function Payment({ route }) {
                             </View>
 
                             <View>
-                                <Text style={gStyles.smallTitle}>Armário {locker}</Text>
+                                {/* <Text style={gStyles.smallTitle}>Armário {locker}</Text> */}
                                 <Text style={[gStyles.smallSubtitle, { textAlign: 'right' }]}>R$200,00</Text>
                             </View>
 
@@ -152,7 +159,7 @@ export default function Payment({ route }) {
                 </View>
 
                 <View style={styles.buttonContainer}>
-                    <Btn text="Alugar Armário" press={func} />
+                    <Btn text="Alugar Armário" press={() => teste()} />
                 </View>
 
             </View>

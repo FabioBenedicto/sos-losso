@@ -7,7 +7,7 @@ import styles from './styles';
 import Logo from '../../assets/Logo.png';
 
 import api from '../../services/api';
-// import useUser from '../../hooks/useUser';
+import useUser from '../../hooks/useUser';
 
 export default function Login() {
     const navigation = useNavigation();
@@ -19,24 +19,28 @@ export default function Login() {
     const [alertV, setAlertV] = useState(false);
     const [email, setEmail] = useState('');
 
-    // const [user, setUser] = useUser();
+    const { user, setUser } = useUser();
 
     const requestBody = {
         email,
     };
 
     const func = () => {
-        if (verif()) {
-            try {
-                api
-                    .post('/students/verifyPasswordExistence', requestBody)
-                    .then((response) => {
-                        console.log(email);
-                    });
-            } catch (error) {
-                console.log(error);
-            }
-        }
+        // if (verif()) {
+        //     try {
+        //         api
+        //             .post('/students/verifyPasswordExistence', requestBody)
+        //             .then((response) => {
+        //                 console.log(response.data);
+        //             });
+        //     } catch (error) {
+        //         console.log(error);
+        //     }
+        // }
+        setUser({
+            name: 'John Doe',
+        });
+        navigation.navigate('Payment');
     };
 
     const scrClear = () => {
