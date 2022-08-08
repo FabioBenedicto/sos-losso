@@ -6,21 +6,51 @@ import gStyles from '../../components/gStyles';
 import styles from './styles';
 import Logo from '../../assets/Logo.png';
 
+import useUser from '../../hooks/useUser';
+import api from '../../services/api';
+
 export default function LoginP2({ route }) {
     const navigation = useNavigation();
     const cont = createRef();
+    const { user, setUser } = useUser();
+    const [email, setEmail] = useState('');
 
-    const [email, setEmail] = useState(route.params.passEmail);
+    //const [email, setEmail] = useState(route.params.passEmail);
     const [pass, setPass] = useState('');
 
     const func = () => {
         if (verif()) {
-            navigation.navigate('Home', {
+            /*navigation.navigate('Home', {
                 passEmail: email,
             });
             scrClear();
+            */
+
+            const requestBody = {
+                email: user.email,
+                password: pass,
+            }
+
+            api
+                .post('/students/session', requestBody, { withCredentials: true })
+                .then((response) => {
+                    setUser(response.data)
+                    //setLoading(false)
+                    //toast.success('Login realizado com sucesso')
+                    console.log('Logi realizado com sucesso')
+                    //setTimeout(() => {
+                    //toast.dismiss()
+                    //navigate('/')
+                    //}, 1500)
+                    navigation.navigate('Home')
+                })
+                .catch(err => {
+                    setLoading(false)
+                    toast.error(err.response.data.erro)
+                })
         }
-    };
+
+    }
 
     const scrClear = () => {
         if (pass != '') {
@@ -51,7 +81,7 @@ export default function LoginP2({ route }) {
 
     useEffect(() => {
         BackHandler.addEventListener('hardwareBackPress', backAction);
-
+        console.log(user);
         return () => BackHandler.removeEventListener('hardwareBackPress', backAction);
     }, []);
 
@@ -69,7 +99,7 @@ export default function LoginP2({ route }) {
                         </View>
 
                         <View style={gStyles.inputContainer}>
-                            <TextInput style={[gStyles.input, styles.inputDisable]} value={email} editable={false} selectTextOnFocus={false} placeholder="E-mail" placeholderTextColor="#7D7B7B" />
+                            <TextInput style={[gStyles.input, styles.inputDisable]} value={user.email} editable={false} selectTextOnFocus={false} placeholder="E-mail" placeholderTextColor="#7D7B7B" />
                             <TextInput style={gStyles.input} value={pass} ref={cont} placeholder="Senha" placeholderTextColor="#7D7B7B" onChangeText={(text) => setPass(text)} blurOnSubmit={false} onSubmitEditing={(e) => func()} />
                         </View>
 

@@ -5,7 +5,6 @@ import Button from '../../components/Button';
 import gStyles from '../../components/gStyles';
 import styles from './styles';
 import Logo from '../../assets/Logo.png';
-
 import api from '../../services/api';
 import useUser from '../../hooks/useUser';
 
@@ -26,22 +25,36 @@ export default function Login() {
     };
 
     const func = () => {
-        // if (verif()) {
-        //     try {
-        //         api
-        //             .post('/students/verifyPasswordExistence', requestBody)
-        //             .then((response) => {
-        //                 console.log(response.data);
-        //             });
-        //     } catch (error) {
-        //         console.log(error);
-        //     }
-        // }
-        setUser({
-            name: 'John Doe',
-        });
-        navigation.navigate('Payment');
-    };
+        api
+            .post('/students/verifyPasswordExistence', requestBody)
+            .then((response) => {
+                const { hasPassword } = response.data;
+                if (hasPassword) {
+                    setUser({ ...user, email: email });
+                    navigation.navigate('LoginP2');
+                } else {
+                    api
+                        .put('/students/generate-code', requestBody)
+                        .then((response) => {
+                            const { randomCode } = response.data
+                            setUser({ ...user, email: email, code: randomCode })
+                            //setLoading(false)
+                            //toast.success('Bem vindo ao MyLocker - Crie sua senha!')
+                            setTimeout(() => {
+                                //toast.dismiss()
+                                navigation.navigate('Verification')
+                            }, 1500)
+                        })
+                        .catch(err => {
+                            //toast.error(err.response.data.erro)
+                        })
+                }
+            })
+            .catch(err => {
+                //setLoading(false)
+                //toast.error(err.response.data.erro)
+            })
+    }
 
     const scrClear = () => {
         if (email != '') {
@@ -91,7 +104,7 @@ export default function Login() {
                 text: 'Cancelar',
                 onPress: () => null,
             },
-
+ 
             { text: 'Sim',
                 onPress: () => BackHandler.exitApp() },
         ]); */

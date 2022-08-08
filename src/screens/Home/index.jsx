@@ -9,22 +9,24 @@ import NotFoundImage from '../../assets/NotFound.png';
 import Locker from '../../assets/Locker.png';
 import UserImage from '../../assets/User.png';
 
-export default function Home({ route }) {
+export default function Home() {
     const navigation = useNavigation();
     const [locker, setLocker] = useState({
         key: 757,
         color: '#FF7B7B',
     });
-    const [email, setEmail] = useState(route.params.passEmail);
+    //const [email, setEmail] = useState(route.params.passEmail);
     const [alertV, setAlertV] = useState(false);
     const { width, height } = Dimensions.get('window');
     const anV = useRef(new Animated.ValueXY({ x: 0, y: height })).current;
     const [modV, setModV] = useState([false]);
+    const [email, setEmail] = useState('');
 
     const func = () => {
-        navigation.navigate('LockersMap', {
+        /*navigation.navigate('LockersMap', {
             passEmail: email,
         });
+        */
     };
 
     const backAction = () => {

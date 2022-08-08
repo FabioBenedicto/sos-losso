@@ -12,16 +12,16 @@ export function UserContextProvider({ children }) {
         email: '',
     });
 
-    useEffect(() => {
-        api
-            .get('/validate/students', { withCredentials: true })
-            .then((response) => {
-                setUser(response.data);
-            })
-            .catch((err) => {
-                console.log(err.response.data);
-            });
-    }, []);
+    // useEffect(() => {
+    //     api
+    //         .get('/validate/students', { withCredentials: true })
+    //         .then((response) => {
+    //             setUser(response.data);
+    //         })
+    //         .catch((err) => {
+    //             console.log(err.response.data);
+    //         });
+    // }, []);
 
     return (
         <UserContext.Provider value={{ user, setUser }}>
