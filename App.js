@@ -4,6 +4,8 @@ import { StyleSheet } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 
+import { useFonts, Roboto_400Regular, Roboto_500Medium } from '@expo-google-fonts/roboto';
+import AppLoading from 'expo-app-loading';
 import Login from './src/screens/Login';
 import Verification from './src/screens/Verification';
 import CreatePassword from './src/screens/CreatePassword';
@@ -16,6 +18,15 @@ import { UserContextProvider } from './src/contexts/UserContext';
 export default function App() {
     const { Navigator, Screen } = createStackNavigator();
     const { gemail, setGemail } = createStackNavigator();
+
+    const [fontsLoaded] = useFonts({
+        Roboto_400Regular,
+        Roboto_500Medium,
+    });
+
+    if (!fontsLoaded) {
+        return <AppLoading />;
+    }
 
     return (
         <UserContextProvider>
